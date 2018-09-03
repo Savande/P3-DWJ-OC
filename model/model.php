@@ -26,6 +26,25 @@ function getComments($postId)
     return $comments;
 }
 
+
+function postComment($postId, $author, $comment)
+{
+    $db = dbConnect();
+    $comments = $db->prepare('INSERT INTO comments(post_id, author, comment, comment_date) VALUES(?, ?, ?, NOW())');
+    $affectedLines = $comments->execute(array($postId, $author, $comment));
+
+    return $affectedLines;
+}
+
+function supComment($postId)
+{
+    $db = dbConnect();
+    $comments = $db->prepare('DELETE FROM comments WHERE id=?');
+    $delete = $comments->execute(array($postId));
+
+    return $delete;
+}
+
 // Nouvelle fonction qui nous permet d'éviter de répéter du code
 function dbConnect()
 {

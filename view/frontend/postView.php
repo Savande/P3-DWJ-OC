@@ -1,5 +1,5 @@
 
-<?php $title = 'Projet 3 (blog)'; ?>
+<?php $title = 'Projet 3 (post)'; ?>
 
 <?php ob_start(); ?>        
  
@@ -25,10 +25,28 @@
         ?>
             <p><strong><?= htmlspecialchars($comment['author']) ?></strong> le <?= $comment['comment_date_fr'] ?></p>
             <p><?= nl2br(htmlspecialchars($comment['comment'])) ?></p>
+            <p>salut</p><a href="index.php?action=deleteComment&amp;id=<?= $comment['id'] ?>&amp;postid=<?= $post['id'] ?>">suprimer</a>
         <?php
         }
         ?>
 <?php $content = ob_get_clean(); ?>
 
+
 <?php require('template.php'); ?>
+
+<h2>Commentaires</h2>
+
+<form action="index.php?action=addComment&amp;id=<?= $post['id'] ?>" method="post">
+    <div>
+        <label for="author">Auteur</label><br />
+        <input type="text" id="author" name="author" />
+    </div>
+    <div>
+        <label for="comment">Commentaire</label><br />
+        <textarea id="comment" name="comment"></textarea>
+    </div>
+    <div>
+        <input type="submit" />
+    </div>
+</form>
     
