@@ -19,7 +19,9 @@ while ($data = $posts->fetch())
             <?= nl2br(htmlspecialchars($data['content'])) ?>
             <br />
             <em><a href="index.php?action=post&id=<?= $data['id'] ?>">Commentaires</a></em>
+            <em><a href="index.php?action=delPost&postId=<?= $data['id'] ?>">Supprimer</a></em>
         </p>
+
     </div>
 <?php
 }

@@ -1,10 +1,38 @@
 <?php
+
 function getPosts()
 {
     $db = dbConnect();
     $req = $db->query('SELECT id, title, content, DATE_FORMAT(creation_date, \'%d/%m/%Y à %Hh%imin%ss\') AS creation_date_fr FROM posts ORDER BY creation_date DESC LIMIT 0, 5');
 
     return $req;
+}
+
+function addPost($author, $post)
+{
+    $db = dbConnect();
+    $req = $db->prepare('INSERT INTO posts(title, content, creation_date) VALUES(?, ?, NOW())');
+    $addPost = $req->execute(array($author, $post));
+
+    return $addPost;
+}
+
+function delPost($postId)
+{
+    $db = dbConnect();
+    $req = $db->prepare('DELETE FROM posts WHERE id=?');
+    $delete = $req->execute(array($postId));
+
+    return $delete;
+}
+
+function upPost($postContent, $postTitle, $postId)
+{
+    $db = dbConnect();
+    $req = $db->prepare('UPDATE posts SET content=?, title=? WHERE id=?');
+    $delete = $req->execute(array($postContent,$postTitle, $postId));
+
+    return $delete;
 }
 
 function getPost($postId)
@@ -26,8 +54,7 @@ function getComments($postId)
     return $comments;
 }
 
-
-function postComment($postId, $author, $comment)
+function postComment($author, $comment, $postId)
 {
     $db = dbConnect();
     $comments = $db->prepare('INSERT INTO comments(post_id, author, comment, comment_date) VALUES(?, ?, ?, NOW())');
@@ -36,10 +63,17 @@ function postComment($postId, $author, $comment)
     return $affectedLines;
 }
 
-function supComment($postId)
-{
-    $db = dbConnect();
+function delComment($commentId){
+	$db = dbConnect();
     $comments = $db->prepare('DELETE FROM comments WHERE id=?');
+    $delete = $comments->execute(array($commentId));
+
+    return $delete;
+}
+
+function delComments($postId){
+	$db = dbConnect();
+    $comments = $db->prepare('DELETE FROM comments WHERE post_id=?');
     $delete = $comments->execute(array($postId));
 
     return $delete;

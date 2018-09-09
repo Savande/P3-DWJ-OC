@@ -6,7 +6,8 @@
         <link href="./public/style.css" rel="stylesheet" /> 
     </head>
         
-    <body> 
+    <body>
+    	<a href="index.php?action=admin&amp;disconnect">deconnection</a>
         <?= $content ?>
     </body>
 </html>
