@@ -1,22 +1,24 @@
 <?php $title = 'Projet 3 (blog)'; ?>
 
+<?php ob_start(); ?>
+
 <h2>Billets</h2>
 
 <form action="index.php?action=admin&amp;setPost" method="post">
     <div>
         <label for="author">Auteur</label><br />
-        <input type="text" id="author" name="author" />
+        <input type="text" id="title" name="author" />
     </div>
     <div>
         <label for="post">Billets</label><br />
-        <textarea id="post" name="post"></textarea>
+        <textarea id="content" name="post"></textarea>
     </div>
     <div>
         <input type="submit" />
     </div>
 </form>
 
-<?php ob_start(); ?>
+
 <h1>Mon super blog !</h1>
 <p>Derniers billets du blog :</p>
 

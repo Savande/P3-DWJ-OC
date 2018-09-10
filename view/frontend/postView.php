@@ -25,7 +25,7 @@
         ?>
             <p><strong><?= htmlspecialchars($comment['author']) ?></strong> le <?= $comment['comment_date_fr'] ?></p>
             <p><?= nl2br(htmlspecialchars($comment['comment'])) ?></p>
-            <p>salut</p><a href="index.php?action=deleteComment&amp;id=<?= $comment['id'] ?>&amp;postid=<?= $post['id'] ?>">suprimer</a>
+            <p>salut</p><a href="index.php?action=post&amp;report=<?= $comment['id'] ?>&amp;postId=<?= $post['id'] ?>">Signaler</a>
         <?php
         }
         ?>
@@ -36,7 +36,7 @@
 
 <h2>Commentaires</h2>
 
-<form action="index.php?action=addComment&amp;id=<?= $post['id'] ?>" method="post">
+<form action="index.php?action=post&amp;addComment&amp;postId=<?= $post['id'] ?>" method="post">
     <div>
         <label for="author">Auteur</label><br />
         <input type="text" id="author" name="author" />

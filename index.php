@@ -19,7 +19,7 @@ if (isset($_GET['action'])) {
             // ON va dans un post avec ses commentaires          
             if (isset($_GET['postId'])) {
                 if ($_GET['postId'] > 0) {
-                    post($_GET['postId']);
+                    aPost($_GET['postId']);
 
                     //ajouter un commentaire 
                     if (isset($_GET['addComment'])) {
@@ -72,9 +72,17 @@ if (isset($_GET['action'])) {
         else{
             admin();
         }
-    }else{
+    }elseif ($_GET['action'] == 'post' && isset($_GET['postId']) && $_GET['postId'] > 0) {
+        post($_GET['postId']);
 
-    }
+        if (isset($_GET['addComment']) && isset($_POST['author'], $_POST['comment'])) {
+            if (!empty($_POST['author']) && !empty($_POST['comment'])) {
+                ddComment($_POST['author'], $_POST['comment'], $_GET['postId']);
+            }elseif (isset($_GET['report']) && $_GET['report'] > 0) {
+                report($_GET['report'], $_GET['postId']);
+            }
+        }  
+    }  
 }
 // Pas d'action on affiche la page des billets 
 else {
