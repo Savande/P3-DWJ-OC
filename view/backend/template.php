@@ -1,24 +1,39 @@
 <!DOCTYPE html>
 <html>
-    <head>
-        <meta charset="utf-8" />
-        <title><?= $title ?></title>
-        <link href="view/backend/style.css" rel="stylesheet" /> 
-        
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
-        <script src="view/backend/jquery.wysibb.min.js"></script>
-		<link rel="stylesheet" href="view/backend/wbbtheme.css" />
-     
-        <script>
-			$(function() {
-			  $("#title").wysibb();
-			  $("#content").wysibb();
-			});
-		</script>
-    </head>
-        
-    <body>
-    	<a href="index.php?action=admin&amp;disconnect">deconnection</a>
-        <?= $content ?>
-    </body>
+<head>
+  <meta charset="utf-8" />
+  <title><?= $title ?></title>
+  <link href="view/backend/style.css" rel="stylesheet" /> 
+
+  <script src="https://cloud.tinymce.com/stable/tinymce.min.js?apiKey=08pnebmdzm16am2m5bwwokpwd2svohoz9b2kv14cy7k7f8ak"></script>
+
+</head>
+
+<script>
+
+  tinymce.init({
+    selector: '#content', 
+    
+    height: 405,
+
+  });
+
+  tinymce.init({
+    selector: '#postContent', 
+
+    height: 405,
+
+  });
+</script>
+
+<body>
+  <?php require('header.php'); ?>
+
+
+  <?= $content ?>
+<div class="marge"></div>
+  <?php require('footer.php'); ?>
+
+</body>
 </html>
+

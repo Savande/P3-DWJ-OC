@@ -1,18 +1,24 @@
-<?php $title = 'Projet 3 (admin formulaire)'; ?>
-
-<?php ob_start(); ?>
-
-
-<form action="index.php?action=admin&amp;try" method="post">
-	<div>
-		<label for="comment">Admin</label><br />
-		<textarea id="password" name="password"></textarea>
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8" />
+        <title>Formulaire Admin</title>
+        <link href="view/backend/style.css" rel="stylesheet" /> 
+    </head>     
+    <body>
+    	<div class="logForm">
+		<form action="index.php?action=admin&amp;try" method="post">
+			<div>
+				<label for="comment">Mot de passe</label><br />
+				<input type="password" name="password">
+			</div>
+			<div>
+				<input type="submit" />
+			</div>
+		</form>
 	</div>
-	<div>
-		<input type="submit" />
-	</div>
-</form>
+    </body>
+</html>
 
-<?php $content = ob_get_clean(); ?>
 
-<?php require('template.php'); ?>
+

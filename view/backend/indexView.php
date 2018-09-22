@@ -2,50 +2,49 @@
 
 <?php ob_start(); ?>
 
-<h2>Billets</h2>
+<table class="viewTable">
 
-<form action="index.php?action=admin&amp;setPost" method="post">
-    <div>
-        <label for="author">Auteur</label><br />
-        <input type="text" id="title" name="author" />
-    </div>
-    <div>
-        <label for="post">Billets</label><br />
-        <textarea id="content" name="post"></textarea>
-    </div>
-    <div>
-        <input type="submit" />
-    </div>
-</form>
+    <caption><h1>Derniers billets du blog :</h1></caption>
 
+<?php  while ($data = $posts->fetch()) {  ?>
+                
+    <tr>
+                
 
-<h1>Mon super blog !</h1>
-<p>Derniers billets du blog :</p>
-
-
-<?php
-while ($data = $posts->fetch())
-{
-?>
-    <div class="news">
-        <h3>
-            <?= htmlspecialchars($data['title']) ?>
-            <em>le <?= $data['creation_date_fr'] ?></em>
-        </h3>
+        <td><h3><?= $data['title'] ?></h3></td>
         
-        <p>
-            <?= nl2br(htmlspecialchars($data['content'])) ?>
-            <br />
-            <em><a href="index.php?action=admin&amp;postId=<?= $data['id'] ?>">Commentaires</a></em>
-            <em><a href="index.php?action=admin&amp;delete=<?= $data['id'] ?>">Supprimer</a></em>
-        </p>
-    </div>
-<?php
-}
-$posts->closeCursor();
+        <td><p><?= substr($data['content'], 0, 120) ?> ... </p></td>    
+        <td><p>le <?= $data['creation_date_fr'] ?></p> </td>
+        <td><p><a href="index.php?action=admin&amp;postId=<?= $data['id'] ?>">éditer</a></p></td>   
+        <td><p><a class="delete" href="index.php?action=admin&amp;delete=<?= $data['id'] ?>">Supprimer</a></p></td>    
+      </tr>                
+     
+<?php }
+ $posts->closeCursor(); ?>
+
+
+                           
+  
+</table>  
+
+<div class="nbPage">
+<p >page <a href="index.php?action=admin&amp;page=1">1</a>
+<?php // Pagination 
+$init = 2;
+$datas = $nbPost->fetch();
+
+while ( $datas['nb_billets'] >  4) {   
+
+?> <a href="index.php?action=admin&amp;page=<?= $init ?>"><?php echo $init?></a>
+
+<?php $datas['nb_billets'] -= 4;
+$init ++    ;
+};
+
+$nbPost->closeCursor();
 ?>
+</p></div>              
+
 <?php $content = ob_get_clean(); ?>
 
 <?php require('template.php'); ?>
-
-adminnnnn

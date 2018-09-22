@@ -1,15 +1,25 @@
 <?php
 
 require('controller/frontend.php');
+require('controller/log.php');
 require('controller/backend.php');
+
 
 
 // on test si une demande est fait
 if (isset($_GET['action'])) {
+
+
+
+
+
     // on test si l'action est admin, essaye l'accès admin 
     if ($_GET['action'] == 'admin'){
+        $mdp = password_hash("admin", PASSWORD_DEFAULT);
+        
         if(isset($_GET['try']) && isset($_POST['password'])){  
-            tryAdmin($_POST['password']);
+            $test = $_POST['password'];
+            tryAdmin($mdp, $test);
         }
         elseif (isset($_GET{'disconnect'})) {
             disconnect();
@@ -44,47 +54,74 @@ if (isset($_GET['action'])) {
                 }else{
                     echo('identifiant du billets invalide');
                 }           
+            }elseif (isset($_GET['pagePost'])){
+                require('view/backend/addPost.php');
+            }elseif (isset($_GET['pageComment'])){
+                if (isset($_GET['reupload'])) {
+                    report($_GET['reupload'], "no", "1");
+                }elseif (isset($_GET['defDel'])) {
+                    deleteComment($_GET['defDel'], "no");
+                }else{
+                    repComment();
+                }                
             }else{
-                getAdmin();
-                //action dans l'inteface d'administration
+                if (isset($_GET['page'])) {
+                    getAdmin($_GET['page']);
+                }else{
+                      getAdmin(1);
+                    //action dans l'inteface d'administration
 
-                // suprimer un billets 
-                if (isset($_GET['delete'])) {
-                    if ($_GET['delete'] > 0) {
-                        deletePost($_GET['delete']);
+                    // suprimer un billets 
+                      if (isset($_GET['delete'])) {
+                        if ($_GET['delete'] > 0) {
+                            deletePost($_GET['delete']);
+                        }
+                        else{
+                            echo'identifiant du billet invalide !';
+                        }
                     }
-                    else{
-                        echo'identifiant du billet invalide !';
-                    }
-                }
-                // creer un billets 
-                if (isset($_GET['setPost'])){
+                    // creer un billets 
+                    if (isset($_GET['setPost'])){
 
-                    if (!empty($_POST['author']) && !empty($_POST['post'])){
-                        setPost($_POST['author'], $_POST['post']);
+                        if (!empty($_POST['author']) && !empty($_POST['post'])){
+                            setPost($_POST['author'], $_POST['post']);
+                        }
+                        else{
+                            echo 'Erreur : tous les champs ne sont pas remplis !';
+                        }
                     }
-                    else{
-                        echo 'Erreur : tous les champs ne sont pas remplis !';
-                    }
-                }
-            }            
+                }    
+              }
+
+
+    }
+    else{
+        admin();
+    }
+
+
+
+}elseif ($_GET['action'] == 'post' && isset($_GET['postId']) && $_GET['postId'] > 0) {
+
+    if (isset($_GET['addComment']) && isset($_POST['author'], $_POST['comment'])) {
+        if (!empty($_POST['author']) && !empty($_POST['comment'])) {
+            ddComment($_POST['author'], $_POST['comment'], $_GET['postId']);
         }
-        else{
-            admin();
-        }
-    }elseif ($_GET['action'] == 'post' && isset($_GET['postId']) && $_GET['postId'] > 0) {
-        post($_GET['postId']);
+    }else{
+        post($_GET['postId']);   
+    }   
+}elseif (isset($_GET['report']) && $_GET['report'] > 0) {
+    report($_GET['report'], $_GET['postId'], "2");
+}  
 
-        if (isset($_GET['addComment']) && isset($_POST['author'], $_POST['comment'])) {
-            if (!empty($_POST['author']) && !empty($_POST['comment'])) {
-                ddComment($_POST['author'], $_POST['comment'], $_GET['postId']);
-            }elseif (isset($_GET['report']) && $_GET['report'] > 0) {
-                report($_GET['report'], $_GET['postId']);
-            }
-        }  
-    }  
 }
 // Pas d'action on affiche la page des billets 
 else {
-    listPosts();
+    if (isset($_GET['page']) && $_GET['page'] >  0 ) {
+        listPosts($_GET['page']);
+    }else{
+        listPosts(1);
+    }
 }
+
+

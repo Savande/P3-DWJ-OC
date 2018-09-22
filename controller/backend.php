@@ -1,40 +1,20 @@
 <?php
 
-
-// CONNEXION DANS L ADMIN
-function admin() {
-	require('./view/backend/formulaire.php');
-}
-
-function tryAdmin($mdp) {
-	$postManager = new PostManager();
-	if($mdp ==  'admin'){
-        setcookie('admin', 'admin', time() + 365*24*3600, null, null, false, true); 
-        header('Location: index.php?action=admin');
-	}else{
-		require('./view/backend/formulaire.php');
-	}	
-}
-
-function getAdmin() {
-	$postManager = new PostManager();
-	$posts = $postManager->getPosts();
-	require('./view/backend/indexView.php');
-}
-
-// deconnexion de l'admin
-function disconnect(){
-	$postManager = new PostManager();
-	setcookie('admin', 'admin', time() - 365*24*3600, null, null, false, true);
-    header('Location: index.php?action=admin');
-}
 // OBTENIR LA PAGE D UN BILLET
 function aPost($id){
 	$postManager = new PostManager();
 	$post = $postManager->getPost($id);
-    $comments = $postManager->getComments($id);
+    $comments = $postManager->getComments($id, "1");
 
     require('./view/backend/postView.php');
+}
+
+function repComment(){
+	$postManager = new PostManager();
+	
+    $comments = $postManager->getRepComments("2");
+
+    require('./view/backend/comment.php');
 }
 
 // OPERATIONS DANS L ADMIN 
@@ -69,5 +49,11 @@ function addComment($author, $comment, $postid){
 function deleteComment($commentId, $postid){
 	$postManager = new PostManager();
 	$postManager->delComment($commentId);
-	header('Location: index.php?action=admin&postId=' . $postid);
+
+	if ($postid == "no") {
+		header('Location: index.php?action=admin&pageComment');
+	}else{
+		header('Location: index.php?action=admin&postId=' . $postid);
+	}	
 }
+

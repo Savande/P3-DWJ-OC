@@ -1,11 +1,40 @@
 <?php
-class PostManager{
-    public function getPosts()
+require_once("post.php");
+
+class PostManager extends Post{
+
+    public function getPosts($page, $finBillets)
+    {
+
+        $db = $this->dbConnect();
+        $req = $db->prepare('SELECT id, title, content, DATE_FORMAT(creation_date, \'%d/%m/%Y à %Hh%imin%ss\') AS creation_date_fr FROM posts ORDER BY creation_date DESC LIMIT :first, :seconde');
+
+        $first = $page ;
+        $seconde = $finBillets ;
+        
+        $req ->bindValue(':first', $first, PDO::PARAM_INT);
+        $req ->bindValue(':seconde', $seconde, PDO::PARAM_INT);
+        $req->execute();
+        return $req;
+    }
+
+    public function getpage()
+    {
+
+        $db = $this->dbConnect();
+        $page = $db->query('SELECT COUNT(*) AS nb_billets FROM posts');
+      
+        return $page;
+    }
+
+     public function getPost($postId)
     {
         $db = $this->dbConnect();
-        $req = $db->query('SELECT id, title, content, DATE_FORMAT(creation_date, \'%d/%m/%Y à %Hh%imin%ss\') AS creation_date_fr FROM posts ORDER BY creation_date DESC LIMIT 0, 5');
+        $req = $db->prepare('SELECT id, title, content, DATE_FORMAT(creation_date, \'%d/%m/%Y à %Hh%imin%ss\') AS creation_date_fr FROM posts WHERE id = ?');
+        $req->execute(array($postId));
+        $post = $req->fetch();
 
-        return $req;
+        return $post;
     }
 
     public function addPost($author, $post)
@@ -35,21 +64,20 @@ class PostManager{
         return $delete;
     }
 
-    public function getPost($postId)
+    public function getComments($postId, $flag)
     {
         $db = $this->dbConnect();
-        $req = $db->prepare('SELECT id, title, content, DATE_FORMAT(creation_date, \'%d/%m/%Y à %Hh%imin%ss\') AS creation_date_fr FROM posts WHERE id = ?');
-        $req->execute(array($postId));
-        $post = $req->fetch();
+        $comments = $db->prepare('SELECT id, author, comment, DATE_FORMAT(comment_date, \'%d/%m/%Y à %Hh%imin%ss\') AS comment_date_fr FROM comments WHERE post_id = ? && flag=? ORDER BY comment_date DESC');
+        $comments->execute(array($postId, $flag));
 
-        return $post;
+        return $comments;
     }
 
-    public function getComments($postId)
+    public function getRepComments($flag)
     {
         $db = $this->dbConnect();
-        $comments = $db->prepare('SELECT id, author, comment, DATE_FORMAT(comment_date, \'%d/%m/%Y à %Hh%imin%ss\') AS comment_date_fr FROM comments WHERE post_id = ? ORDER BY comment_date DESC');
-        $comments->execute(array($postId));
+        $comments = $db->prepare('SELECT id, author, comment, post_id, DATE_FORMAT(comment_date, \'%d/%m/%Y à %Hh%imin%ss\') AS comment_date_fr FROM comments WHERE flag=? ORDER BY comment_date DESC');
+        $comments->execute(array($flag));
 
         return $comments;
     }
@@ -57,7 +85,7 @@ class PostManager{
     public function postComment($author, $comment, $postId)
     {
         $db = $this->dbConnect();
-        $comments = $db->prepare('INSERT INTO comments(post_id, author, comment, comment_date) VALUES(?, ?, ?, NOW())');
+        $comments = $db->prepare('INSERT INTO comments(post_id, author, comment, comment_date, flag) VALUES(?, ?, ?, NOW(), "1")');
         $affectedLines = $comments->execute(array($postId, $author, $comment));
 
         return $affectedLines;
@@ -79,19 +107,13 @@ class PostManager{
         return $delete;
     }
 
-    // Nouvelle fonction qui nous permet d'éviter de répéter du code
-    public function dbConnect()
-    {
-        try
-        {
-            $db = new PDO('mysql:host=localhost;dbname=test;charset=utf8', 'root', '');
-            return $db;
-        }
-        catch(Exception $e)
-        {
-            die('Erreur : '.$e->getMessage());
-        }
-    }
+    public function reportComment($commentId, $flag){
 
+        $db = $this->dbConnect();
+        $comments = $db->prepare('UPDATE comments SET flag=? WHERE  id=?');
+        $delete = $comments->execute(array($flag, $commentId));
+        
+        return $delete;
+    }
 }
 

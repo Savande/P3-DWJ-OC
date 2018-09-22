@@ -1,32 +1,56 @@
-<?php $title = 'Projet 3 (blog)'; ?>
 
+<?php $title = "Billet simple pour l'Alaska !"; ?>
 <?php ob_start(); ?>
-<h1>Mon super blog !</h1>
-<p>Derniers billets du blog :</p>
+
+
+
+<p class="postsTitle">Les derniers épisodes !</p>
 
 
 <?php
 while ($data = $posts->fetch())
 {
 ?>
-    <div class="news">
+
+<a href="index.php?action=post&amp;postId=<?= $data['id'] ?>">
+
+    <div class="indexNews">
         <h3>
-            <?= htmlspecialchars($data['title']) ?>
-            <em>le <?= $data['creation_date_fr'] ?></em>
+            <?= $data['title'] ?>
+            
         </h3>
         
         <p>
-            <?= nl2br(htmlspecialchars($data['content'])) ?>
-            <br />
-            <em><a href="index.php?action=post&amp;postId=<?= $data['id'] ?>">Commentaires</a></em>
-            <em><a href="index.php?action=delPost&amp;postId=<?= $data['id'] ?>">Supprimer</a></em>
+            <?= substr($data['content'], 0, 120) ?> ...     
         </p>
+        <em>le <?= $data['creation_date_fr'] ?></em>
 
-    </div>
-<?php
+    </div></a>
+    
+    <?php
 }
 $posts->closeCursor();
 ?>
+
+<div class="nbPage">
+<p >page <a href="index.php?page=1">1</a>
+<?php // Pagination 
+$init = 2;
+$datas = $nbPost->fetch();
+
+while ( $datas['nb_billets'] >  4) {   
+
+?> <a href="index.php?page=<?= $init ?>"><?php echo $init?></a>
+
+<?php $datas['nb_billets'] -= 4;
+$init ++    ;
+};
+
+$nbPost->closeCursor();
+?>
+</p></div>
+
+
 <?php $content = ob_get_clean(); ?>
 
 <?php require('template.php'); ?>

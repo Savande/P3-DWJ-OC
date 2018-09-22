@@ -1,27 +1,177 @@
-h1, h3
-{
-    text-align:center;
-}
-h3
-{
-    background-color:black;
-    color:white;
-    font-size:0.9em;
-    margin-bottom:0px;
-}
-.news p
-{
-    background-color:#CCCCCC;
-    margin-top:0px;
-}
-.news
-{
-    width:70%;
-    margin:auto;
+body{
+    background-color: #C3C5C5;
+    margin: 0;
+    padding: 0;
+    font-family: arial;
 }
 
-a
-{
+a{
     text-decoration: none;
-    color: blue;
+    color: black;
 }
+
+/* NAV MENU */
+nav{
+
+    background-color: #4F4F57;
+    height: 50px;
+    margin: 0;
+    padding: 10px;
+}
+
+.nbPage{
+    justify-content: center;   
+    text-align: center;
+    margin: auto;
+    width: 200px;
+}
+.nbPage a{
+    text-decoration: underline;
+}
+
+footer{
+    background-color: #4F4F57;
+    height: 50px;
+    padding: 10px;
+    font-weight: bold;
+    text-align: center;
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+}
+
+.navmenu a{   
+    color: #FFFFFF;
+     margin-left: 7%;
+}
+
+/*NAV MENU */
+
+/* CONTENT*/
+
+.postContent{
+    display: flex;
+    flex-wrap: wrap;
+}
+.rep{
+    color:red;
+}
+
+.postsTitle{
+    font-size: 2em;
+    text-decoration: underline;
+    font-weight: bold;
+   text-align: center;
+
+}
+
+.post{
+    text-align: center;
+    width: 70%;
+    margin: auto;
+    margin-bottom: 30px;
+    margin-top: 38px;
+}
+.indexNews{    
+
+    margin: auto;
+    text-align: center;
+    border: solid black 1px;
+    width: 70%;
+    margin-bottom: 30px;
+    margin-top: 30px;
+    padding-bottom: 15px;
+}
+
+.news{
+    text-align: center;
+ 
+    margin-bottom: 30px;
+    margin-top: 10px;
+}
+.comments{
+  
+    border: solid black 1px;
+    margin: auto;
+    margin-bottom: 30px;
+    margin-top: 30px;
+    padding-bottom: 10px; 
+    width: 500px;
+
+}
+
+.comment{
+    text-align: center; 
+    width: 500px;
+    margin: auto;
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+
+.comment form{
+    text-align: center;
+    border: solid black 1px;
+    height: 300px; 
+    padding-top: 10px; 
+}
+
+.comment input{
+    width: 50%;
+    height: 30px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+.comment textarea{
+    width: 50%;
+    height: 100px;
+    margin-top: 10px;
+    margin-bottom: 5px;
+}
+
+.comment form{
+
+    text-align: center;
+    border: solid black 1px;
+    height: 300px;
+   
+}
+
+.marge{
+    margin-bottom: 100px;
+}
+
+.titre{
+
+    width: 100%;
+    height: 400px;
+    position: relative;
+    text-align: center;
+    border: solid black 1px;    
+}
+img{
+    width: 100%;
+    min-height: 400px;     
+    max-height: 400px;   
+    z-index: 0.5;
+    position: absolute;
+    top: 0;
+    left: 0;
+    opacity: 0.9;  
+}
+
+.titre p{
+    
+    
+    font-weight: bold;
+    font-size: 2em;
+    color: #FFFFFF;
+    z-index: 2;
+    position: relative;
+    margin-top: 170px;
+}
+/* CONTENT */
+/* COMMENTS */
+
+
+
